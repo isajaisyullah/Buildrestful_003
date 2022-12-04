@@ -22,66 +22,68 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class resController {
-    private static Map<String, Product> productRepo = new HashMap<>();
+    private static Map<String, Product> productRepo = new HashMap<>(); //membuat hashmap untuk menyimpan data
     static {
-        Product honey = new Product();
-        honey.setId("1");
-        honey.setName("Honey");
-        productRepo.put(honey.getId(), honey);
+        Product honey = new Product(); //memanggil class Product.java yang di deklarasikan menjadi variabel honey
+        honey.setId("1");  //menambahkan data id
+        honey.setName("Honey"); //menambahkan data nama
+        productRepo.put(honey.getId(), honey); //menambahkan data pada hashmap
         
-        Product almond = new Product();
-        almond.setId("2");
-        almond.setName("Almond");
-        productRepo.put(almond.getId(), almond);
+        Product almond = new Product(); //memanggil class Product.java yang di deklarasikan menjadi variabel almond
+        almond.setId("2"); //menambahkan data id
+        almond.setName("Almond"); //menambahkan data nama
+        productRepo.put(almond.getId(), almond); //menambahkan data pada hashmap
     }
     
     //Mengambil data
-    @RequestMapping(value = "/products")
+    @RequestMapping(value = "/products") //tampilan halaman products
     public ResponseEntity<Object> getProduct() {
-        return new ResponseEntity<>(productRepo.values(), HttpStatus.OK);
+        return new ResponseEntity<>(productRepo.values(), HttpStatus.OK);  //menampilkan seluruh data pada hashmap dengan function values()
     }
     
     //Create, input data
-    @RequestMapping(value = "/products", method = RequestMethod.POST)
-    public ResponseEntity<Object> createProduct(@RequestBody Product product) {
+    @RequestMapping(value = "/products", method = RequestMethod.POST) //tampilan halaman products dengan penambahan request POST untuk menambahkan data
+    public ResponseEntity<Object> createProduct(@RequestBody Product product /*mengambil data pada halaman menjadi variabel product*/) {
         
-        if (!productRepo.containsKey(product.getId())){
+        //mengecek dengan if condition dengan penambahan data jika dalam hashmap tidak terdapat id yang sama dengan yang akan ditambahkan
+        if (!productRepo.containsKey(product.getId())){ //menggunakan function containsKey() untuk membandingkan data dalam hashmap dengan variable product
             
-            productRepo.put(product.getId(), product);
-            return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED);
+            productRepo.put(product.getId(), product); //menambahkan data pada hashmap
+            return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED); //menampilkan pesan data telah dibuat dengan sukses
            
         }
         else{
-            return new ResponseEntity<>("id already used in another data", HttpStatus.OK);
+            return new ResponseEntity<>("id already used in another data", HttpStatus.OK); //menampilkan pesan jika id pada variabel product telah terdapat pada hashmap
         }
          
         
     }
     
     //Edit, Mengubah data
-    @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Object> updateProduct(@PathVariable("id") String id, @RequestBody Product product) {
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT) //tampilan halaman products beserta id dengan penambahan request PUT untuk mengubah data
+    public ResponseEntity<Object> updateProduct(@PathVariable("id") String id, @RequestBody Product product /*mengambil data pada halaman untuk id dan variabel product*/) {
         
-        if(productRepo.containsKey(id)){
+        //melakukan perubahan jika hashmap memiliki id yang cocok dengan yang dimasukan pada url/id
+        if(productRepo.containsKey(id)){ //menggunakan function containsKey() untuk membandingkan data dalam hashmap dengan variable id
         
-            productRepo.remove(id);
-            product.setId(id);
-            productRepo.put(id, product);
-            return new ResponseEntity<>("Product is updated successfully", HttpStatus.OK);
+            productRepo.remove(id); //menghapus data yang sudah ada sebelumnya
+            product.setId(id); //set id baru
+            productRepo.put(id, product); //menambahkan data pada hashmap
+            return new ResponseEntity<>("Product is updated successfully", HttpStatus.OK); //menampilkan pesan berhasil
 
         }
         else{
-            return new ResponseEntity<>("data id doesn't exists", HttpStatus.OK);
+            return new ResponseEntity<>("data id doesn't exists", HttpStatus.OK); //menampilkan pesan jika id tidak ditemukan
         }
         
         
     }
     
     //Hapus data
-    @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Object> delete(@PathVariable("id") String id){
-        productRepo.remove(id);
-        return new ResponseEntity<>("Product is deleted seuccessfully", HttpStatus.OK);
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE) //tampilan halaman products beserta id dengan penambahan request DELETE untuk menghapus data
+    public ResponseEntity<Object> delete(@PathVariable("id") String id /*Mengambil data id pada url*/){
+        productRepo.remove(id); //menghapus data
+        return new ResponseEntity<>("Product is deleted seuccessfully", HttpStatus.OK); //menampilkan pesan telah terhapus
     }
  }
  
