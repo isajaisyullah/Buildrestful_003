@@ -27,12 +27,18 @@ public class resController {
         Product honey = new Product(); //memanggil class Product.java yang di deklarasikan menjadi variabel honey
         honey.setId("1");  //menambahkan data id
         honey.setName("Honey"); //menambahkan data nama
+        honey.setPrice(10000);
+        honey.setDiscount(5);
+        
+        int total = honey.getPrice() - (honey.getPrice()*honey.getDiscount()/100);
+        
+        honey.setTotal(total);
         productRepo.put(honey.getId(), honey); //menambahkan data pada hashmap
         
-        Product almond = new Product(); //memanggil class Product.java yang di deklarasikan menjadi variabel almond
-        almond.setId("2"); //menambahkan data id
-        almond.setName("Almond"); //menambahkan data nama
-        productRepo.put(almond.getId(), almond); //menambahkan data pada hashmap
+//        Product almond = new Product(); //memanggil class Product.java yang di deklarasikan menjadi variabel almond
+//        almond.setId("2"); //menambahkan data id
+//        almond.setName("Almond"); //menambahkan data nama
+//        productRepo.put(almond.getId(), almond); //menambahkan data pada hashmap
     }
     
     //Mengambil data
@@ -48,6 +54,9 @@ public class resController {
         //mengecek dengan if condition dengan penambahan data jika dalam hashmap tidak terdapat id yang sama dengan yang akan ditambahkan
         if (!productRepo.containsKey(product.getId())){ //menggunakan function containsKey() untuk membandingkan data dalam hashmap dengan variable product
             
+            int total = product.getPrice() - (product.getPrice() * product.getDiscount()/100);
+            
+            product.setTotal(total);
             productRepo.put(product.getId(), product); //menambahkan data pada hashmap
             return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED); //menampilkan pesan data telah dibuat dengan sukses
            
@@ -85,5 +94,18 @@ public class resController {
         productRepo.remove(id); //menghapus data
         return new ResponseEntity<>("Product is deleted seuccessfully", HttpStatus.OK); //menampilkan pesan telah terhapus
     }
+    
+//    @RequestMapping(value = "/products/total", method = RequestMethod.GET)
+//    public ResponseEntity<Object> getTotal(@RequestBody Product product) {
+//        int harga = product.getPrice();
+//        int diskon = product.getDiscount();
+//        
+//        int total = harga - (harga*diskon/100);
+//        
+//        
+//        
+//        
+//        return new ResponseEntity<>(total, HttpStatus.OK);  //menampilkan seluruh data pada hashmap dengan function values()
+//    }
  }
  
